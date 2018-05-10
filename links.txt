@@ -1,0 +1,10 @@
+Rahul Mody.
+
+Project 2
+
+ssh = https://web.njit.edu/~rrm43/is218/Project2/
+
+github = git@github.com:rahul9mody/project2.git
+github = https://github.com/rahul9mody/project2.git
+
+
