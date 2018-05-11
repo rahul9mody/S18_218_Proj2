@@ -1,22 +1,35 @@
 <?php   
-
-    session_start();
-
-   $x = isset($_SESSION['fname']);
-
+    
+session_start();
+    
+   $x = isset($_SESSION['email']);
+   
    if(!$x)
    {
 
-    header("signin.php");
-    
-   }
+    header("Location: signin.php");
 
-    include ("view/header.php") ;
-    include("../model/database.php"); 
+   }
+    include ("view/header.php");
+    include("model/database.php");
+    include("model/accounts.php");
+    include("model/todos.php");
+
+    $email = $_SESSION['email'];
+    echo "email = $email";
+    $results = show_not_done_tasks($email);
+    $count = 0;
+
+    foreach($results as $row)
+    {
+        $count += 1;
+    }
+
+    echo "count = $count";
 
 ?>
 
-<meta name = "viewport" content = "width=device-width, initial-scale=1">
+
     
     <style>
         .jumbotron{
@@ -26,8 +39,12 @@
             padding: 5px;
         }
         
-        #hello{
+        #welcome{
             text-align: center;
+        }
+
+        #logout{
+            text-align: right;
         }
         
         table{
@@ -50,6 +67,8 @@
             font-size: 25px;
             
         }
+
+
         
         button{
         }
@@ -57,47 +76,90 @@
 
 <body>
 
-
-	
-	<div class = "jumbotron">
+    <div class = "jumbotron">
             <h1>Todos by Rahul</h1>
-        </div>
+            <form action="logout.php" method="POST" >
+                <input type="submit" class="btn-danger" value="Logout" >
+            </form>
+    </div>
         
-        <div class = "container-fluid" id = "main_container">
-            <div class = "row" id = "row1">
-                <div class = "col-md-12" id = "hello">
-                    <!--<h2>Welcome, User</h2> -->
-                    	<h2>Welcome, <?php echo $_SESSION['fname'], ' ', $_SESSION['lname'];?></h2>
-                </div>
-            </div>
-        </div>
-        
-        <button type="button" class="btn btn-success"><a href = "add.php" >ADD</a></button>
+    <div class="container">
+
+        <h2 id="welcome">Welcome, <?php echo $_SESSION['fname'], ' ', $_SESSION['lname'];?></h2>
+            
+        <br>
+
         <table class="table">
-            <thead class = "thead-dark">
+            <thead>
                 <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Check</th>
-                    <th scope="col">Task</th>
+                    <th scope="col">No.</th>
+                    <th scope="col">Task.</th>
+                    <th scope="col">Created Date.</th>
                     <th scope="col">Due Date</th>
-                    <th scope="col">Current Date</th>
                     <th scope="col">Edit</th>
                     <th scope="col">Delete</th>
                 </tr>
             </thead>
             <tbody>
+                <?php foreach($results as $row): ?>
                 <tr>
-                    <th></th>
-                    <td><input type="checkbox" checked="checked"></td>
-                    <td><?php foreach ($results as $result){
-                        echo ($result['owneremail']);
-                    }?></td>
-                    <td></td>
-                    <td></td>
+                    <th scope="row">1</th>
+                    <td> <?php echo $row['message']; ?> </td>
+                    <td> <?php echo $row['createddate']; ?> </td>
+                    <td> <?php echo $row['duedate']; ?> </td>
                     <td><button type="button" class="btn btn-primary"><a href = "edit.php">Edit</a></button></td>
                     <td><button type="button" class="btn btn-danger">Delete</button></td>
-                </tr>                
+                </tr>
+                <?php endforeach;?>
             </tbody>
         </table>
-       
+
+
+    </div>
+
+    
+
+ <br>
+ <br>   
 <?php include ("view/footer.php") ; ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

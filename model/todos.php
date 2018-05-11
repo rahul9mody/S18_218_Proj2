@@ -33,8 +33,9 @@ function show_not_done_tasks($email)
 	$results = $statement->fetchAll();
 	$statement->closeCursor();
 
-	return results;
+	return $results;
 }	
+
 
 
 //Edit task
